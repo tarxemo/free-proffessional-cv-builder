@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ cv.title }} - Preview - ProTechCV{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cv-preview.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">{{ cv.title }}</h1>
+        <div class="flex space-x-3">
+            <a href="{% url 'cv:cv_builder' %}" class="btn btn-outline">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Editor
+            </a>
+            <a href="{% url 'cv:cv_download' cv.id %}" class="btn btn-primary">
+                <i class="fas fa-file-pdf mr-2"></i> Download PDF
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- CV Preview Content -->
+        <div id="cv-preview-content" class="p-8">
+            {% include 'cv/cv_template.html' %}
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="bg-gray-50 px-8 py-4 border-t border-gray-200 flex justify-between items-center">
+            <div class="text-sm text-gray-500">
+                Last updated: {{ cv.updated_at|date:"F j, Y" }}
+            </div>
+            <div class="flex space-x-3">
+                <button id="print-cv" class="btn btn-outline">
+                    <i class="fas fa-print mr-2"></i> Print
+                </button>
+                <a href="{% url 'cv:cv_download' cv.id %}" class="btn btn-primary">
+                    <i class="fas fa-download mr-2"></i> Download PDF
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle print button
+    document.getElementById('print-cv').addEventListener('click', function() {
+        window.print();
+    });
+    
+    // Add print-specific styles
+    const style = document.createElement('style');
+    style.textContent = `
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #cv-preview-content,
+            #cv-preview-content * {
+                visibility: visible;
+            }
+            #cv-preview-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>
+{% endblock %}

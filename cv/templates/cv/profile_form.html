@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Profile - ProTechCV{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-900">
+                {% if form.instance.pk %}
+                    Edit Your Profile
+                {% else %}
+                    Create Your Profile
+                {% endif %}
+            </h1>
+            <p class="mt-1 text-sm text-gray-500">
+                Fill in your personal and professional information.
+            </p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-6 p-6">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+            <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">
+                            {{ form.non_field_errors|join:". " }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Personal Information -->
+            <div class="border-b border-gray-200 pb-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Personal Information</h2>
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            First Name <span class="text-red-500">*</span>
+                        </label>
+                        <div class="mt-1">
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.first_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Last Name <span class="text-red-500">*</span>
+                        </label>
+                        <div class="mt-1">
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.last_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-4">
+                        <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Email <span class="text-red-500">*</span>
+                        </label>
+                        <div class="mt-1">
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.email.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Phone
+                        </label>
+                        <div class="mt-1">
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.phone.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="border-b border-gray-200 pb-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Address</h2>
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-6">
+                        <label for="{{ form.address.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Street Address
+                        </label>
+                        <div class="mt-1">
+                            {{ form.address }}
+                            {% if form.address.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.address.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.city.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            City
+                        </label>
+                        <div class="mt-1">
+                            {{ form.city }}
+                            {% if form.city.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.city.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.country.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Country
+                        </label>
+                        <div class="mt-1">
+                            {{ form.country }}
+                            {% if form.country.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.country.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="{{ form.postal_code.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            ZIP / Postal Code
+                        </label>
+                        <div class="mt-1">
+                            {{ form.postal_code }}
+                            {% if form.postal_code.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.postal_code.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Online Presence -->
+            <div class="border-b border-gray-200 pb-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">Online Presence</h2>
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.linkedin_url.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            LinkedIn Profile
+                        </label>
+                        <div class="mt-1">
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
+                                    linkedin.com/in/
+                                </span>
+                                {{ form.linkedin_url }}
+                            </div>
+                            {% if form.linkedin_url.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.linkedin_url.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="{{ form.github_url.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            GitHub Profile
+                        </label>
+                        <div class="mt-1">
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
+                                    github.com/
+                                </span>
+                                {{ form.github_url }}
+                            </div>
+                            {% if form.github_url.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.github_url.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="{{ form.portfolio_url.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            Portfolio Website
+                        </label>
+                        <div class="mt-1">
+                            {{ form.portfolio_url }}
+                            {% if form.portfolio_url.errors %}
+                                <p class="mt-2 text-sm text-red-600">{{ form.portfolio_url.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div>
+                <label for="{{ form.professional_summary.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                    Professional Summary
+                </label>
+                <div class="mt-1">
+                    {{ form.professional_summary }}
+                    {% if form.professional_summary.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.professional_summary.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                <p class="mt-2 text-sm text-gray-500">
+                    Write a few sentences about your professional background and skills.
+                </p>
+            </div>
+
+            <div class="pt-5">
+                <div class="flex justify-end">
+                    <a href="{% if form.instance.pk %}{% url 'cv:profile_detail' form.instance.pk %}{% else %}{% url 'cv:dashboard' %}{% endif %}" 
+                       class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Cancel
+                    </a>
+                    <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        {% if form.instance.pk %}Update{% else %}Create{% endif %} Profile
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize form field styling
+    document.addEventListener('DOMContentLoaded', function() {
+        // Style all form inputs
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            // Add base classes
+            input.classList.add('block', 'w-full', 'shadow-sm', 'sm:text-sm', 'rounded-md');
+            
+            // Add specific classes based on input type
+            if (input.tagName === 'SELECT') {
+                input.classList.add('border-gray-300', 'focus:ring-indigo-500', 'focus:border-indigo-500');
+            } else if (input.type === 'checkbox' || input.type === 'radio') {
+                input.classList.add('h-4', 'w-4', 'text-indigo-600', 'focus:ring-indigo-500', 'border-gray-300', 'rounded');
+            } else if (input.tagName === 'TEXTAREA') {
+                input.classList.add('border-gray-300', 'focus:ring-indigo-500', 'focus:border-indigo-500');
+                input.rows = 4; // Set default rows for textareas
+            } else {
+                input.classList.add('border-gray-300', 'focus:ring-indigo-500', 'focus:border-indigo-500');
+            }
+            
+            // Add error classes if field has errors
+            if (input.classList.contains('error')) {
+                input.classList.add('border-red-300', 'text-red-900', 'placeholder-red-300', 'focus:outline-none', 'focus:ring-red-500', 'focus:border-red-500');
+            }
+        });
+    });
+</script>
+{% endblock %}

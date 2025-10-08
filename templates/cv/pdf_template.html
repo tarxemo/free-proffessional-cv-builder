@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ cv.title }} - PDF Export</title>
+    <style>
+        {% include 'cv/pdf_styles.css' %}
+    </style>
+</head>
+<body>
+    <div class="cv-container">
+        <!-- Header Section -->
+        <header class="cv-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>{{ profile_data.first_name }} {{ profile_data.last_name }}</h1>
+                    <h2>{{ profile_data.professional_title|default:"Professional" }}</h2>
+                </div>
+                <div class="header-right">
+                    {% if profile_data.email %}<div class="contact-item"><i class="fas fa-envelope"></i> {{ profile_data.email }}</div>{% endif %}
+                    {% if profile_data.phone %}<div class="contact-item"><i class="fas fa-phone"></i> {{ profile_data.phone }}</div>{% endif %}
+                    {% if profile_data.city %}<div class="contact-item"><i class="fas fa-map-marker-alt"></i> {{ profile_data.city }}{% if profile_data.country %}, {{ profile_data.country }}{% endif %}</div>{% endif %}
+                    {% if profile_data.linkedin_url %}<div class="contact-item"><i class="fab fa-linkedin"></i> {{ profile_data.linkedin_url|default:""|cut:"https://"|cut:"http://"|cut:"www." }}</div>{% endif %}
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="cv-main">
+            <!-- Left Column -->
+            <div class="left-column">
+                {% if 'summary' in sections %}
+                <section class="cv-section" id="summary">
+                    <h3>Summary</h3>
+                    <div class="section-content">
+                        {{ profile_data.professional_summary|linebreaks }}
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if 'experience' in sections %}
+                <section class="cv-section" id="experience">
+                    <h3>Work Experience</h3>
+                    <div class="section-content">
+                        {% for exp in cv_content.experiences %}
+                        <div class="experience-item">
+                            <div class="experience-header">
+                                <h4>{{ exp.job_title }}</h4>
+                                <div class="experience-company">{{ exp.company }}</div>
+                                <div class="experience-dates">
+                                    {{ exp.start_date|date:"M Y" }} - 
+                                    {{ exp.end_date|date:"M Y" if exp.end_date else "Present" }}
+                                </div>
+                            </div>
+                            <div class="experience-description">
+                                {{ exp.description|linebreaks }}
+                                {% if exp.achievements %}
+                                <strong>Key Achievements:</strong>
+                                <ul>
+                                    {% for achievement in exp.achievements %}
+                                    <li>{{ achievement }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if 'education' in sections %}
+                <section class="cv-section" id="education">
+                    <h3>Education</h3>
+                    <div class="section-content">
+                        {% for edu in cv_content.educations %}
+                        <div class="education-item">
+                            <div class="education-header">
+                                <h4>{{ edu.degree }} in {{ edu.field_of_study }}</h4>
+                                <div class="education-institution">{{ edu.institution }}</div>
+                                <div class="education-dates">
+                                    {{ edu.start_date|date:"Y" }} - {{ edu.end_date|date:"Y"|default:"Present" }}
+                                    {% if edu.gpa %}| GPA: {{ edu.gpa }}{% endif %}
+                                </div>
+                            </div>
+                            {% if edu.description %}
+                            <div class="education-description">
+                                {{ edu.description|linebreaks }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                {% if 'skills' in sections %}
+                <section class="cv-section" id="skills">
+                    <h3>Skills</h3>
+                    <div class="section-content">
+                        {% for skill in cv_content.skills %}
+                        <div class="skill-item">
+                            <div class="skill-name">{{ skill.name }}</div>
+                            <div class="skill-level">
+                                {% with ''|center:skill.level as range %}
+                                {% for _ in range %}<span class="skill-dot filled"></span>{% endfor %}
+                                {% endwith %}
+                                {% with ''|center:skill.level_remaining as range %}
+                                {% for _ in range %}<span class="skill-dot"></span>{% endfor %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if 'projects' in sections %}
+                <section class="cv-section" id="projects">
+                    <h3>Projects</h3>
+                    <div class="section-content">
+                        {% for project in cv_content.projects %}
+                        <div class="project-item">
+                            <h4>{{ project.name }}</h4>
+                            {% if project.url %}
+                            <div class="project-url">
+                                <a href="{{ project.url }}" target="_blank">{{ project.url|truncatechars:30 }}</a>
+                            </div>
+                            {% endif %}
+                            <div class="project-description">
+                                {{ project.description|linebreaks }}
+                            </div>
+                            {% if project.technologies %}
+                            <div class="project-technologies">
+                                <strong>Technologies:</strong> {{ project.technologies|join:", " }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if 'languages' in sections %}
+                <section class="cv-section" id="languages">
+                    <h3>Languages</h3>
+                    <div class="section-content">
+                        {% for lang in cv_content.languages %}
+                        <div class="language-item">
+                            <div class="language-name">{{ lang.name }}</div>
+                            <div class="language-level">{{ lang.proficiency }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+
+                {% if 'certifications' in sections %}
+                <section class="cv-section" id="certifications">
+                    <h3>Certifications</h3>
+                    <div class="section-content">
+                        {% for cert in cv_content.certifications %}
+                        <div class="certification-item">
+                            <h4>{{ cert.name }}</h4>
+                            <div class="certification-issuer">{{ cert.issuer }}</div>
+                            <div class="certification-date">{{ cert.date|date:"M Y" }}</div>
+                            {% if cert.credential_id %}
+                            <div class="certification-id">Credential ID: {{ cert.credential_id }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

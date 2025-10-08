@@ -1,0 +1,456 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}CV Builder - ProTechCV{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cv-builder.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">CV Builder</h1>
+        <p class="mt-2 text-sm text-gray-600">Create and customize your professional CV</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Left Sidebar - Form -->
+        <div class="lg:col-span-4 space-y-6">
+            <!-- CV Info Card -->
+            <div class="bg-white shadow rounded-lg p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">CV Information</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label for="cv-title" class="block text-sm font-medium text-gray-700">Title</label>
+                        <input type="text" id="cv-title" name="title" value="{{ user_cv.title }}" 
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    
+                    <div>
+                        <label for="cv-template" class="block text-sm font-medium text-gray-700">Template</label>
+                        <select id="cv-template" name="template" class="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm">
+                            {% for template in templates %}
+                            <option value="{{ template.id }}" 
+                                    data-preview-url="{% url 'cv:template_preview' template.id %}"
+                                    {% if user_cv.template_id == template.id %}selected{% endif %}>
+                                {{ template.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <a href="#" id="preview-template" class="mt-1 text-sm text-indigo-600 hover:text-indigo-500">Preview Template</a>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input id="default-cv" name="default_cv" type="checkbox" 
+                               class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                               {% if user_cv.is_default %}checked{% endif %}>
+                        <label for="default-cv" class="ml-2 block text-sm text-gray-700">Set as default CV</label>
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button type="button" id="save-cv" 
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Save CV
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Sections Navigation -->
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-medium text-gray-900">Sections</h2>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    <a href="#profile" class="block px-6 py-4 hover:bg-gray-50" data-section="profile">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-user text-indigo-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm font-medium text-gray-900">Profile</h3>
+                                <p class="text-sm text-gray-500">Your personal and contact information</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="#skills" class="block px-6 py-4 hover:bg-gray-50" data-section="skills">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-code text-indigo-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm font-medium text-gray-900">Skills</h3>
+                                <p class="text-sm text-gray-500">Your technical and professional skills</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="#experience" class="block px-6 py-4 hover:bg-gray-50" data-section="experience">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-briefcase text-indigo-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm font-medium text-gray-900">Experience</h3>
+                                <p class="text-sm text-gray-500">Your work history and achievements</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="#education" class="block px-6 py-4 hover:bg-gray-50" data-section="education">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-indigo-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm font-medium text-gray-900">Education</h3>
+                                <p class="text-sm text-gray-500">Your academic background</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="#projects" class="block px-6 py-4 hover:bg-gray-50" data-section="projects">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-project-diagram text-indigo-600"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm font-medium text-gray-900">Projects</h3>
+                                <p class="text-sm text-gray-500">Your notable projects and contributions</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side - Preview -->
+        <div class="lg:col-span-8">
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-lg font-medium text-gray-900">Preview</h2>
+                    <div class="flex space-x-2">
+                        <button type="button" id="download-pdf" 
+                                class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <i class="fas fa-download mr-1"></i> PDF
+                        </button>
+                        <button type="button" id="print-cv" 
+                                class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <i class="fas fa-print mr-1"></i> Print
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div id="cv-preview" class="cv-preview-container">
+                        <!-- CV preview will be loaded here via AJAX -->
+                        <div class="flex items-center justify-center h-64 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                            <p class="text-gray-500">Select a section to start building your CV</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Template Preview Modal -->
+<div id="template-preview-modal" class="fixed z-50 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        
+        <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full sm:p-6">
+            <div>
+                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        Template Preview
+                    </h3>
+                    <div class="mt-4">
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <div id="template-preview-content" class="cv-preview-container">
+                                <!-- Template preview will be loaded here via AJAX -->
+                                <div class="flex items-center justify-center h-64 bg-gray-50 rounded-lg">
+                                    <p class="text-gray-500">Loading preview...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                <button type="button" id="use-template" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    Use This Template
+                </button>
+                <button type="button" id="close-preview" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        const saveUrl = '{% url "cv:cv_api_save" %}';
+        let currentTemplateId = '{{ user_cv.template_id }}';
+        let currentCvId = '{{ user_cv.id|default:"" }}';
+        
+        // Initialize sections
+        const sections = {
+            profile: {
+                title: 'Profile',
+                url: '{% url "cv:profile_update" %}',
+                content: null
+            },
+            skills: {
+                title: 'Skills',
+                url: '{% url "cv:skill_list" %}',
+                content: null
+            },
+            experience: {
+                title: 'Experience',
+                url: '{% url "cv:experience_list" %}',
+                content: null
+            },
+            education: {
+                title: 'Education',
+                url: '{% url "cv:education_list" %}',
+                content: null
+            },
+            projects: {
+                title: 'Projects',
+                url: '{% url "cv:project_list" %}',
+                content: null
+            }
+        };
+        
+        // Load section content
+        function loadSection(sectionId) {
+            const section = sections[sectionId];
+            if (!section) return;
+            
+            // Show loading state
+            const previewContainer = document.getElementById('cv-preview');
+            previewContainer.innerHTML = `
+                <div class="flex items-center justify-center h-64">
+                    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+                </div>
+            `;
+            
+            // Load section content via AJAX
+            fetch(section.url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfToken
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                section.content = html;
+                renderPreview();
+            })
+            .catch(error => {
+                console.error('Error loading section:', error);
+                previewContainer.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-400 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-red-700">Error loading section. Please try again.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Render CV preview
+        function renderPreview() {
+            // In a real implementation, this would render the CV using the selected template
+            // For now, we'll just show a simple preview
+            const previewContainer = document.getElementById('cv-preview');
+            const activeSection = document.querySelector('[data-section].active');
+            
+            if (activeSection) {
+                const sectionId = activeSection.getAttribute('data-section');
+                const section = sections[sectionId];
+                
+                if (section && section.content) {
+                    previewContainer.innerHTML = section.content;
+                }
+            } else {
+                previewContainer.innerHTML = `
+                    <div class="flex items-center justify-center h-64 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                        <p class="text-gray-500">Select a section to start building your CV</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Save CV
+        function saveCv() {
+            const title = document.getElementById('cv-title').value;
+            const templateId = document.getElementById('cv-template').value;
+            const isDefault = document.getElementById('default-cv').checked;
+            
+            const cvData = {
+                cv_id: currentCvId,
+                title: title,
+                template_id: templateId,
+                is_default: isDefault,
+                sections: {}
+            };
+            
+            // In a real implementation, collect section data here
+            
+            fetch(saveUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(cvData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    currentCvId = data.cv_id;
+                    showAlert('CV saved successfully', 'success');
+                } else {
+                    throw new Error(data.message || 'Error saving CV');
+                }
+            })
+            .catch(error => {
+                console.error('Error saving CV:', error);
+                showAlert(error.message || 'Error saving CV', 'error');
+            });
+        }
+        
+        // Show alert message
+        function showAlert(message, type = 'success') {
+            const alert = document.createElement('div');
+            alert.className = `fixed top-4 right-4 p-4 rounded-md ${
+                type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            }`;
+            alert.innerHTML = `
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 ${type === 'success' ? 'text-green-400' : 'text-red-400'}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium">${message}</p>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+        
+        // Event Listeners
+        
+        // Section navigation
+        document.querySelectorAll('[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                
+                // Update active state
+                document.querySelectorAll('[data-section]').forEach(el => {
+                    el.classList.remove('bg-gray-50');
+                });
+                this.classList.add('bg-gray-50');
+                
+                // Load section content
+                loadSection(sectionId);
+            });
+        });
+        
+        // Save CV button
+        document.getElementById('save-cv').addEventListener('click', saveCv);
+        
+        // Template preview
+        const previewModal = document.getElementById('template-preview-modal');
+        const previewTemplateBtn = document.getElementById('preview-template');
+        const closePreviewBtn = document.getElementById('close-preview');
+        const useTemplateBtn = document.getElementById('use-template');
+        const templateSelect = document.getElementById('cv-template');
+        
+        if (previewTemplateBtn) {
+            previewTemplateBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const templateId = templateSelect.value;
+                const previewUrl = templateSelect.options[templateSelect.selectedIndex].getAttribute('data-preview-url');
+                
+                // Load template preview
+                fetch(previewUrl, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('template-preview-content').innerHTML = html;
+                    previewModal.classList.remove('hidden');
+                });
+            });
+        }
+        
+        if (closePreviewBtn) {
+            closePreviewBtn.addEventListener('click', function() {
+                previewModal.classList.add('hidden');
+            });
+        }
+        
+        if (useTemplateBtn) {
+            useTemplateBtn.addEventListener('click', function() {
+                currentTemplateId = templateSelect.value;
+                previewModal.classList.add('hidden');
+                showAlert('Template applied successfully', 'success');
+            });
+        }
+        
+        // Download PDF
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            if (currentCvId) {
+                window.location.href = `/cv/${currentCvId}/download/`;
+            } else {
+                showAlert('Please save your CV before downloading', 'error');
+            }
+        });
+        
+        // Print CV
+        document.getElementById('print-cv').addEventListener('click', function() {
+            window.print();
+        });
+        
+        // Initialize first section
+        if (Object.keys(sections).length > 0) {
+            const firstSection = document.querySelector('[data-section]');
+            if (firstSection) {
+                firstSection.click();
+            }
+        }
+    });
+</script>
+{% endblock %}

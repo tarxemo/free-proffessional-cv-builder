@@ -1,0 +1,224 @@
+/* Main Layout */
+.h-screen {
+    height: 100vh;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* Section Buttons */
+.section-btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.section-btn:hover {
+    background-color: #f3f4f6;
+    transform: translateX(2px);
+}
+
+.section-btn.active {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    font-weight: 500;
+}
+
+.section-btn.active i {
+    color: #4f46e5;
+}
+
+/* Form Elements */
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="date"],
+select,
+textarea {
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    width: 100%;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #a5b4fc;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #4f46e5;
+    color: white;
+    border: 1px solid #4f46e5;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+    border-color: #4338ca;
+}
+
+.btn-outline {
+    background-color: white;
+    color: #4f46e5;
+    border: 1px solid #d1d5db;
+}
+
+.btn-outline:hover {
+    background-color: #f9fafb;
+    border-color: #9ca3af;
+}
+
+/* Editor Panel */
+#editor-panel {
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.05);
+    z-index: 20;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Preview Modal */
+#preview-modal {
+    z-index: 50;
+}
+
+/* CV Preview */
+#cv-preview {
+    min-height: 100%;
+    max-width: 8.5in;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Drag and Drop */
+.draggable {
+    cursor: move;
+    transition: transform 0.2s ease-in-out;
+}
+
+.draggable.dragging {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+.drop-zone {
+    border: 2px dashed #d1d5db;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.drop-zone.active {
+    border-color: #4f46e5;
+    background-color: #eef2ff;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .flex.flex-col.lg\:flex-row {
+        flex-direction: column;
+    }
+    
+    .w-80 {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    #editor-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 400px;
+        transform: translateX(100%);
+    }
+    
+    #editor-panel.active {
+        transform: translateX(0);
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    #cv-preview,
+    #cv-preview * {
+        visibility: visible;
+    }
+    
+    #cv-preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 100%;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+}

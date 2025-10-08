@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/cv-builder.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <div class="w-80 bg-white border-r border-gray-200 flex flex-col">
+        <div class="p-4 border-b border-gray-200">
+            <h1 class="text-xl font-bold text-gray-800">CV Builder</h1>
+            <p class="text-sm text-gray-500">Create your professional CV</p>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto">
+            <div class="p-4">
+                <div class="mb-6">
+                    <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">CV Information</h2>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                            <input type="text" id="cv-title" value="{{ user_cv.title|default:'My Professional CV' }}" 
+                                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Template</label>
+                            <select id="cv-template" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                                {% for template in templates %}
+                                <option value="{{ template.id }}" 
+                                        {% if user_cv.template_id == template.id %}selected{% endif %}>
+                                    {{ template.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="default-cv" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" 
+                                   {% if user_cv.is_default %}checked{% endif %}>
+                            <label for="default-cv" class="ml-2 block text-sm text-gray-700">Set as default CV</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Sections</h2>
+                    <div class="space-y-2">
+                        <button data-section="profile" class="section-btn w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-user-circle w-5 text-gray-500 mr-3"></i>
+                            <span>Profile</span>
+                        </button>
+                        <button data-section="summary" class="section-btn w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-file-alt w-5 text-gray-500 mr-3"></i>
+                            <span>Summary</span>
+                        </button>
+                        <button data-section="experience" class="section-btn w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-briefcase w-5 text-gray-500 mr-3"></i>
+                            <span>Experience</span>
+                        </button>
+                        <button data-section="education" class="section-btn w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-graduation-cap w-5 text-gray-500 mr-3"></i>
+                            <span>Education</span>
+                        </button>
+                        <button data-section="skills" class="section-btn w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-code w-5 text-gray-500 mr-3"></i>
+                            <span>Skills</span>
+                        </button>
+                        <button data-section="projects" class="section-btn w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-project-diagram w-5 text-gray-500 mr-3"></i>
+                            <span>Projects</span>
+                        </button>
+                        <button data-section="languages" class="section-btn w-full text-left px-4 py-2 rounded-md hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-language w-5 text-gray-500 mr-3"></i>
+                            <span>Languages</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-200">
+            <button id="save-cv" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center">
+                <i class="fas fa-save mr-2"></i>
+                Save CV
+            </button>
+            <div class="mt-2">
+                <button id="download-pdf" class="w-full bg-white text-indigo-600 border border-indigo-600 py-2 px-4 rounded-md hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center justify-center">
+                    <i class="fas fa-file-pdf mr-2"></i>
+                    Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Toolbar -->
+        <div class="bg-white border-b border-gray-200 p-3 flex justify-between items-center">
+            <div class="flex space-x-2">
+                <button id="undo-btn" class="p-2 text-gray-600 hover:bg-gray-100 rounded-md" title="Undo">
+                    <i class="fas fa-undo"></i>
+                </button>
+                <button id="redo-btn" class="p-2 text-gray-600 hover:bg-gray-100 rounded-md" title="Redo">
+                    <i class="fas fa-redo"></i>
+                </button>
+                <div class="border-r border-gray-300 mx-2"></div>
+                <button id="preview-btn" class="p-2 text-gray-600 hover:bg-gray-100 rounded-md" title="Preview">
+                    <i class="fas fa-eye"></i> Preview
+                </button>
+            </div>
+            <div>
+                <span class="text-sm text-gray-500 mr-3">Auto-saved</span>
+                <span id="last-saved" class="text-sm text-gray-400">Just now</span>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-auto bg-gray-50 p-6">
+            <div id="cv-preview" class="bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto">
+                <!-- CV content will be dynamically loaded here -->
+                <div id="section-content" class="p-8">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Editor Panel (initially hidden) -->
+    <div id="editor-panel" class="w-96 bg-white border-l border-gray-200 overflow-y-auto hidden">
+        <div class="p-4 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <h2 id="editor-title" class="text-lg font-medium text-gray-900">Edit Section</h2>
+                <button id="close-editor" class="text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div id="editor-content" class="p-4">
+            <!-- Dynamic form will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div id="preview-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-screen overflow-auto">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-lg font-medium">CV Preview</h3>
+                <button id="close-preview" class="text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <!-- CV preview will be rendered here -->
+                <div id="cv-full-preview"></div>
+            </div>
+            <div class="p-4 border-t border-gray-200 flex justify-end space-x-3">
+                <button id="print-cv" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                    <i class="fas fa-print mr-2"></i>Print
+                </button>
+                <button id="download-cv" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                    <i class="fas fa-download mr-2"></i>Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/cv-builder.js' %}"></script>
+{% endblock %}

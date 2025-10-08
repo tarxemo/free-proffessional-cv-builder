@@ -1,0 +1,385 @@
+/* Base Styles */
+.cv-template {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header Styles */
+.cv-header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 30px 40px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-left h1 {
+    margin: 0 0 5px 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.header-left h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: #ecf0f1;
+    opacity: 0.9;
+}
+
+.header-right {
+    text-align: right;
+}
+
+.contact-item {
+    margin-bottom: 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.contact-item i {
+    width: 20px;
+    text-align: center;
+    margin-left: 10px;
+    color: #3498db;
+}
+
+.contact-item a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.contact-item a:hover {
+    color: #3498db;
+    text-decoration: underline;
+}
+
+/* Main Content Layout */
+.cv-main {
+    display: flex;
+    padding: 30px 40px;
+}
+
+.left-column {
+    flex: 2;
+    padding-right: 30px;
+}
+
+.right-column {
+    flex: 1;
+    padding-left: 30px;
+    border-left: 1px solid #eee;
+}
+
+/* Section Styles */
+.cv-section {
+    margin-bottom: 30px;
+}
+
+.cv-section h3 {
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    margin: 0 0 20px 0;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+}
+
+.section-icon {
+    margin-right: 10px;
+    color: #3498db;
+    font-size: 16px;
+}
+
+.section-content {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Experience Section */
+.experience-item {
+    margin-bottom: 25px;
+}
+
+.experience-item:last-child {
+    margin-bottom: 0;
+}
+
+.experience-header {
+    margin-bottom: 10px;
+}
+
+.experience-item h4 {
+    margin: 0 0 3px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.experience-company {
+    font-weight: 500;
+    font-size: 15px;
+    color: #3498db;
+    margin-bottom: 3px;
+}
+
+.experience-dates {
+    font-size: 13px;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+.experience-location {
+    margin-left: 5px;
+}
+
+.experience-description {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.achievements {
+    margin-top: 10px;
+}
+
+.achievements ul {
+    margin: 5px 0 0 0;
+    padding-left: 20px;
+}
+
+.achievements li {
+    margin-bottom: 3px;
+}
+
+/* Education Section */
+.education-item {
+    margin-bottom: 20px;
+}
+
+.education-item:last-child {
+    margin-bottom: 0;
+}
+
+.education-header h4 {
+    margin: 0 0 3px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.education-institution {
+    font-weight: 500;
+    font-size: 15px;
+    color: #3498db;
+    margin-bottom: 3px;
+}
+
+.education-dates {
+    font-size: 13px;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+.gpa {
+    margin-left: 5px;
+}
+
+/* Skills Section */
+.skill-item {
+    margin-bottom: 15px;
+}
+
+.skill-name {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.skill-level {
+    display: flex;
+}
+
+.skill-dot {
+    width: 12px;
+    height: 12px;
+    border: 1px solid #3498db;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.skill-dot.filled {
+    background-color: #3498db;
+}
+
+/* Projects Section */
+.project-item {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #eee;
+}
+
+.project-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.project-item h4 {
+    margin: 0 0 3px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.project-url {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.project-url a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.project-url a:hover {
+    text-decoration: underline;
+}
+
+.project-description {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.project-technologies {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+/* Languages Section */
+.language-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.language-name {
+    font-weight: 500;
+}
+
+/* Certifications Section */
+.certification-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #eee;
+}
+
+.certification-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.certification-item h4 {
+    margin: 0 0 3px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.certification-issuer {
+    font-size: 14px;
+    font-weight: 500;
+    color: #3498db;
+    margin-bottom: 2px;
+}
+
+.certification-date, .certification-id {
+    font-size: 13px;
+    color: #7f8c8d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+    }
+    
+    .header-right {
+        margin-top: 20px;
+        text-align: left;
+        width: 100%;
+    }
+    
+    .contact-item {
+        justify-content: flex-start;
+    }
+    
+    .cv-main {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .left-column, .right-column {
+        width: 100%;
+        padding: 0;
+    }
+    
+    .right-column {
+        border-left: none;
+        border-top: 1px solid #eee;
+        margin-top: 20px;
+        padding-top: 20px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .cv-template {
+        box-shadow: none;
+        border-radius: 0;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    .cv-header {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    a {
+        text-decoration: none;
+        color: #2c3e50;
+    }
+    
+    .cv-main {
+        padding: 20px 0 0 0;
+    }
+}

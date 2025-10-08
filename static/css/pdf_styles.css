@@ -1,0 +1,306 @@
+/* Base Styles */
+@page {
+    margin: 0;
+    size: A4;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+.cv-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 210mm;
+    margin: 0 auto;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styles */
+.cv-header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 25px 30px;
+    margin-bottom: 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.header-left h2 {
+    margin: 5px 0 0 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ecf0f1;
+    opacity: 0.9;
+}
+
+.header-right {
+    text-align: right;
+}
+
+.contact-item {
+    margin-bottom: 5px;
+    font-size: 11px;
+    opacity: 0.9;
+}
+
+.contact-item i {
+    width: 16px;
+    text-align: center;
+    margin-right: 5px;
+    color: #3498db;
+}
+
+/* Main Content Layout */
+.cv-main {
+    display: flex;
+    padding: 0 30px 30px;
+}
+
+.left-column {
+    flex: 2;
+    padding-right: 20px;
+}
+
+.right-column {
+    flex: 1;
+    padding-left: 20px;
+    border-left: 1px solid #eee;
+}
+
+/* Section Styles */
+.cv-section {
+    margin-bottom: 25px;
+    page-break-inside: avoid;
+}
+
+.cv-section h3 {
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    margin: 0 0 15px 0;
+    letter-spacing: 1px;
+}
+
+.section-content {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Experience Section */
+.experience-item {
+    margin-bottom: 20px;
+}
+
+.experience-header {
+    margin-bottom: 8px;
+}
+
+.experience-item h4 {
+    margin: 0 0 2px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.experience-company {
+    font-weight: 500;
+    font-size: 12px;
+    color: #3498db;
+    margin-bottom: 2px;
+}
+
+.experience-dates {
+    font-size: 10px;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+.experience-description {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* Education Section */
+.education-item {
+    margin-bottom: 15px;
+}
+
+.education-header h4 {
+    margin: 0 0 2px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.education-institution {
+    font-weight: 500;
+    font-size: 12px;
+    color: #3498db;
+    margin-bottom: 2px;
+}
+
+.education-dates {
+    font-size: 10px;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+/* Skills Section */
+.skill-item {
+    margin-bottom: 12px;
+}
+
+.skill-name {
+    font-size: 11px;
+    margin-bottom: 3px;
+    font-weight: 500;
+}
+
+.skill-level {
+    display: flex;
+}
+
+.skill-dot {
+    width: 10px;
+    height: 10px;
+    border: 1px solid #3498db;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.skill-dot.filled {
+    background-color: #3498db;
+}
+
+/* Projects Section */
+.project-item {
+    margin-bottom: 15px;
+}
+
+.project-item h4 {
+    margin: 0 0 2px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.project-url {
+    font-size: 10px;
+    margin-bottom: 3px;
+}
+
+.project-url a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.project-technologies {
+    font-size: 10px;
+    color: #7f8c8d;
+    margin-top: 3px;
+}
+
+/* Languages Section */
+.language-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 11px;
+}
+
+.language-name {
+    font-weight: 500;
+}
+
+/* Certifications Section */
+.certification-item {
+    margin-bottom: 12px;
+}
+
+.certification-item h4 {
+    margin: 0 0 2px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.certification-issuer {
+    font-size: 11px;
+    font-weight: 500;
+    color: #3498db;
+    margin-bottom: 2px;
+}
+
+.certification-date, .certification-id {
+    font-size: 10px;
+    color: #7f8c8d;
+}
+
+/* Utilities */
+ul {
+    margin: 5px 0;
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 3px;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+/* Print Specific Styles */
+@media print {
+    body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    .cv-container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .cv-header {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .cv-main {
+        padding: 0 20px 20px;
+    }
+    
+    .right-column {
+        border-left: 1px solid #eee;
+    }
+}
